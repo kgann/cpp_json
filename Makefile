@@ -3,11 +3,12 @@ CC=g++
 CFLAGS=-I$(IDIR)
 OBJ = json.o test.o
 
-%.o: %.c
+%.o: %.cpp
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 json: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
+	rm -f *.o
 
 .PHONY: clean
 clean:
