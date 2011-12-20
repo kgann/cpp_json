@@ -1,5 +1,4 @@
 #include "./include/json.h"
-#include <vector>
 #include <sstream>
 #include <string>
 
@@ -11,25 +10,14 @@ JSON::JSON(std::string json){
 JSON::~JSON(){}
 
 void JSON::parse(){
-  std::vector<std::string> elements;
-  std::string json(this->json);
-
-  json = strip(json, '{');
-  json = strip(json, '}');
-
+  std::string token, key, value;
+  size_t position;
+  std::string json(strip(strip(this->json, '}'), '{'));
   std::istringstream iss(json);
-  std::string token;
   while(getline(iss, token, ',')){
-    elements.push_back(token);
-  }
-  int i;
-  for(i = 0; i < elements.size(); i++){
-    std::string ele, key, value;
-    size_t position;
-    ele = elements[i];
-    position = ele.find_first_of(':');
-    key = strip(ele.substr(0, position), '"');
-    value = strip(ele.substr(position+1, ele.size()), '"');
+    position = token.find_first_of(':');
+    key = strip(token.substr(0, position), '"');
+    value = strip(token.substr(position+1, token.size()), '"');
     this->json_map[key] = value;
   }
 }
