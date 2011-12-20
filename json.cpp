@@ -2,27 +2,31 @@
 #include <sstream>
 #include <string>
 
+#define COMMA ','
+#define COLON ':'
+#define DBL_QUOTE '"'
+#define JSON_BEGIN '{'
+#define JSON_END '}'
+
 JSON::JSON(std::string json){
   this->json = json;
   parse();
 }
 
-JSON::~JSON(){}
-
 void JSON::parse(){
-  std::string token, key, value;
+  std::string token, key, value, json;
   size_t position;
-  std::string json(strip(strip(this->json, '}'), '{'));
+  json = strip(strip(this->json, JSON_END), JSON_BEGIN);
   std::istringstream iss(json);
-  while(getline(iss, token, ',')){
-    position = token.find_first_of(':');
-    key = strip(token.substr(0, position), '"');
-    value = strip(token.substr(position+1, token.size()), '"');
+  while(getline(iss, token, COMMA)){
+    position = token.find_first_of(COLON);
+    key = strip(token.substr(0, position), DBL_QUOTE);
+    value = strip(token.substr(position+1, token.size()), DBL_QUOTE);
     this->json_map[key] = value;
   }
 }
 
-std::string JSON::strip(std::string s, char c){
+std::string JSON::strip(std::string s, const char c){
   size_t first, last;
   first = s.find_first_of(c);
   last = s.find_last_of(c);
@@ -35,9 +39,8 @@ std::string JSON::getJSON(){
 }
 
 std::string JSON::get(std::string key) {
-  if (this->json_map.find(key) == this->json_map.end()) {
+  if(this->json_map.find(key) == this->json_map.end())
     throw "'" + key + "'" + " is not a valid key!";
-  } else {
+  else
     return this->json_map[key];
-  }
 }
