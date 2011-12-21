@@ -2,6 +2,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <iostream>
 
 #define COMMA ','
 #define COLON ':'
@@ -31,8 +32,8 @@ void JSON::split(std::string s, const char delimeter, std::vector<std::string> &
   std::string current;
   bool inside_quote = false;
   for(int i = 0; i < s.length(); i++){
-    if(s[i] == DBL_QUOTE){
-      if(i == 0 || (i > 0 && s[i-1] != ESCAPE)){
+    if(s[i] != delimeter){
+      if(s[i] == DBL_QUOTE && (i == 0 || (i > 0 && s[i-1] != ESCAPE))){
         inside_quote = !inside_quote;
       }
       current += s[i];
@@ -47,11 +48,11 @@ void JSON::split(std::string s, const char delimeter, std::vector<std::string> &
 }
 
 std::string JSON::trim(std::string s, const char c){
-  size_t first, last;
-  first = s.find_first_of(c);
-  last = s.find_last_of(c);
-  if(first == s.length() - 1) first = -1;
-  return s.substr(first+1, last-1);
+  if(s[0] == c)
+    s = s.substr(1, s.size());
+  if(s[s.size()-1] == c)
+    s = s.substr(0, s.size()-1);
+  return s;
 }
 
 std::string JSON::getJSON(){

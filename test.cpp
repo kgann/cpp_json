@@ -4,7 +4,7 @@ using namespace std;
 
 int main(){
   JSON lead("{\"rent_roll_id\":\"4eef4:8785,28b20bedf000001\",\"client_id\":\"4eeb5694528b207096000002\",\"management_co_id\":6024,\"start_date\":\"2011-07-01\",\"end_date\":\"2011-07-31\"}");
-  JSON lessee("{\"first_name\":\"TEST\",\"last_name\":\"LASTNAME\",\"state\":\"Atlanta\",\"phone_1\":\"(678) 555-9781\",\"phone_2\":null,\"phone_3\":null,\"email\":\"guest@gmail.com\",\"move_date\":\"7/1/11\",\"property_id\":\"88386\",\"lessee_source\":\"Internet.com\",\"lm_client_id\":\"4eeb5694528b207096000002\",\"rent_roll_id\":\"4eef4878528b20bedf000001\"\"}");
+  JSON lessee("{\"first_name\":\"TEST\",\"last_name\":\"LASTNAME\",\"state\":\"Atlanta\",\"phone_1\":\"(678) 555-9781\",\"phone_2\":null,\"phone_3\":null,\"email\":\"guest@gmail.com\",\"move_date\":\"7/1/11\",\"property_id\":\"88386\",\"lessee_source\":\"Internet.com\",\"lm_client_id\":\"4eeb5694528b207096000002\",\"rent_roll_id\":\"4eef4878528b20bedf000001\"}");
   try {
     cout << "Lead = " << std::endl;
     cout << lead.get("rent_roll_id") << endl;
