@@ -18,11 +18,11 @@ JSON::JSON(std::string json){
 void JSON::parse(){
   std::string json;
   std::vector<std::string> properties, data;
-  json = strip(strip(this->json, JSON_END), JSON_BEGIN);
+  json = trim(trim(this->json, JSON_END), JSON_BEGIN);
   split(json, COMMA, properties);
   for(int i = 0; i < properties.size(); i++){
     split(properties[i], COLON, data);
-    this->json_map[strip(data[0], DBL_QUOTE)] = strip(data[1], DBL_QUOTE);
+    this->json_map[trim(data[0], DBL_QUOTE)] = trim(data[1], DBL_QUOTE);
     data.clear();
   }
 }
@@ -46,7 +46,7 @@ void JSON::split(std::string s, const char delimeter, std::vector<std::string> &
   v.push_back(current);
 }
 
-std::string JSON::strip(std::string s, const char c){
+std::string JSON::trim(std::string s, const char c){
   size_t first, last;
   first = s.find_first_of(c);
   last = s.find_last_of(c);
