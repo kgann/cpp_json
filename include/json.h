@@ -1,5 +1,6 @@
 #include <string>
 #include <map>
+#include <vector>
 
 class JSON {
   private:
@@ -7,6 +8,7 @@ class JSON {
     std::map<std::string, std::string> json_map;
     std::string strip(std::string, char);
     void parse();
+    void split(std::string, char, std::vector<std::string>&);
 
   public:
     JSON(std::string);

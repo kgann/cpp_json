@@ -1,12 +1,14 @@
 #include "./include/json.h"
 #include <sstream>
 #include <string>
+#include <vector>
 
 #define COMMA ','
 #define COLON ':'
 #define DBL_QUOTE '"'
 #define JSON_BEGIN '{'
 #define JSON_END '}'
+#define ESCAPE '\\'
 
 JSON::JSON(std::string json){
   this->json = json;
@@ -14,16 +16,34 @@ JSON::JSON(std::string json){
 }
 
 void JSON::parse(){
-  std::string token, key, value, json;
-  size_t position;
+  std::string json;
+  std::vector<std::string> properties, data;
   json = strip(strip(this->json, JSON_END), JSON_BEGIN);
-  std::istringstream iss(json);
-  while(getline(iss, token, COMMA)){
-    position = token.find_first_of(COLON);
-    key = strip(token.substr(0, position), DBL_QUOTE);
-    value = strip(token.substr(position+1, token.size()), DBL_QUOTE);
-    this->json_map[key] = value;
+  split(json, COMMA, properties);
+  for(int i = 0; i < properties.size(); i++){
+    split(properties[i], COLON, data);
+    this->json_map[strip(data[0], DBL_QUOTE)] = strip(data[1], DBL_QUOTE);
+    data.clear();
   }
+}
+
+void JSON::split(std::string s, const char delimeter, std::vector<std::string> &v){
+  std::string current;
+  bool inside_quote = false;
+  for(int i = 0; i < s.length(); i++){
+    if(s[i] == DBL_QUOTE){
+      if(i == 0 || (i > 0 && s[i-1] != ESCAPE)){
+        inside_quote = !inside_quote;
+      }
+      current += s[i];
+    }else if(s[i] == delimeter && !inside_quote){
+      v.push_back(current);
+      current.clear();
+    }else{
+      current += s[i];
+    }
+  }
+  v.push_back(current);
 }
 
 std::string JSON::strip(std::string s, const char c){
