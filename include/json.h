@@ -6,9 +6,9 @@ class JSON {
   private:
     std::string json;
     std::map<std::string, std::string> json_map;
-    std::string trim(std::string, char);
+    std::string trim(std::string, const char);
     void parse();
-    void split(std::string, char, std::vector<std::string>&);
+    void split(std::string, const char, std::vector<std::string>&);
 
   public:
     JSON(std::string);
